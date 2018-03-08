@@ -1,18 +1,18 @@
 # Task 2 - Getting Data from API
-In task 2, we will fetch the top business headlines in the UK by using [newsapi](https://newsapi.org/) and convert to our own objects. 
+In task 2, we will fetch the top business headlines in the UK by using [newsapi](https://newsapi.org/) and convert to our own objects.
 
-To call Rest Api, we'll use Retrofit which is a HTTP Client for Android and one of the most common libraries and to convert the json response into objects defined by us, we'll use Retrofit gson converter. 
+To call Rest Api, we'll use Retrofit which is a HTTP Client for Android and one of the most common libraries and to convert the json response into objects defined by us, we'll use Retrofit gson converter.
 
 We added these two dependencies in task1 :
 
  ```
   implementation 'com.squareup.retrofit2:retrofit:2.3.0'
   implementation 'com.squareup.retrofit2:converter-gson:2.3.0'
- 
+
  ```
 To be able get data from API, we need :
 
-**API KEY** :  `6b195c9d219f4487a12a02ea8085d798`  
+**API KEY** :  `6b195c9d219f4487a12a02ea8085d798`
 
 **BASE_URL** : `https://newsapi.org/v2/`
 
@@ -21,7 +21,7 @@ To be able get data from API, we need :
 **COUNTRY** : `gb`
 
 
-An example response coming from API : 
+An example response coming from API :
 
  ```
 {
@@ -52,13 +52,13 @@ An example response coming from API :
 	}]
 }
  ```
- 
+
 ## Creating API Layer
 
-* Create `api` package under `com.[domain_name].newsapplication`  
-* Create data models 
+* Create `api` package under `com.[domain_name].newsapplication`
+* Create data models
 
-**Create Article.java** : 
+**Create Article.java** :
 
  ```
 package com.busradeniz.newsapplication.api;
@@ -112,9 +112,9 @@ public class Article {
     }
 }
  ```
- 
+
  **Create ArticleListApiResponse.java** :
- 
+
 ```
  package com.busradeniz.newsapplication.api;
 
@@ -154,7 +154,7 @@ public class ArticleListApiResponse {
     }
 }
  ```
- 
+
 **Create Retrofit Interface - ArticleApi.java** :
 
 ```
@@ -171,9 +171,9 @@ public interface ArticleApi {
 
 }
  ```
- 
- **Create Api Service - ArticleService.java** :  
- 
+
+ **Create Api Service - ArticleService.java** :
+
  ```
  package com.busradeniz.newsapplication.api;
 
@@ -212,10 +212,10 @@ public class ArticleService {
     }
 }
   ```
-  
-  **Call api from MainActivity.java** :  
-  
-  ``` 
+
+  **Call api from MainActivity.java** :
+
+  ```
   public class MainActivity extends AppCompatActivity implements Callback<ArticleListApiResponse> {
 
     private ArticleService articleService = ArticleService.getInstance();
@@ -243,3 +243,9 @@ public class ArticleService {
     }
 }
   ```
+  
+  **Don't forget to add INTERNET permission to AndroidManifest.xml** :
+
+ ```
+      <uses-permission android:name="android.permission.INTERNET" />
+ ```
