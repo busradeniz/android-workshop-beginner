@@ -1,7 +1,7 @@
 package com.busradeniz.newsapplication;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.busradeniz.newsapplication.api.ArticleListApiResponse;
