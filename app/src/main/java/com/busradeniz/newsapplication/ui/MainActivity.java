@@ -1,9 +1,12 @@
-package com.busradeniz.newsapplication;
+package com.busradeniz.newsapplication.ui;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
+import com.busradeniz.newsapplication.R;
 import com.busradeniz.newsapplication.api.ArticleListApiResponse;
 import com.busradeniz.newsapplication.api.ArticleService;
 
@@ -14,12 +17,25 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements Callback<ArticleListApiResponse> {
 
     private ArticleService articleService = ArticleService.getInstance();
+    private ArticleRecyclerViewAdapter adapter;
+    private RecyclerView articleRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
+        initRecyclerView();
         getArticles();
+    }
+
+    private void initRecyclerView() {
+        articleRecyclerView = findViewById(R.id.recyclerView);
+
+        adapter = new ArticleRecyclerViewAdapter();
+        articleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        articleRecyclerView.setAdapter(adapter);
     }
 
     private void getArticles() {
@@ -30,6 +46,8 @@ public class MainActivity extends AppCompatActivity implements Callback<ArticleL
     @Override
     public void onResponse(Call<ArticleListApiResponse> call, Response<ArticleListApiResponse> response) {
         Log.i("MainActivity", "response : " + response.body().toString());
+        adapter.updateDataSet(response.body().getArticles());
+        adapter.notifyDataSetChanged();
     }
 
     @Override
