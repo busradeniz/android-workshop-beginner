@@ -28,4 +28,13 @@ public class ArticleListApiResponse {
     public List<Article> getArticles() {
         return articles;
     }
+
+    @Override
+    public String toString() {
+        return "ArticleListApiResponse{" +
+                "status='" + status + '\'' +
+                ", totalResults=" + totalResults +
+                ", articles=" + articles +
+                '}';
+    }
 }

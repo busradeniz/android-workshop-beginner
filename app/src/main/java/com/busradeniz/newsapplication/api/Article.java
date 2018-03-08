@@ -40,4 +40,15 @@ public class Article {
     public String getUrlToImage() {
         return urlToImage;
     }
+
+    @Override
+    public String toString() {
+        return "Article{" +
+                "author='" + author + '\'' +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", urlToImage='" + urlToImage + '\'' +
+                '}';
+    }
 }
