@@ -11,7 +11,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity implements Callback<ArticleListApiResponse> {
+public class MainActivity extends AppCompatActivity {
 
     private ArticleService articleService = ArticleService.getInstance();
 
@@ -24,16 +24,16 @@ public class MainActivity extends AppCompatActivity implements Callback<ArticleL
 
     private void getArticles() {
         articleService.getArticles()
-                .enqueue(this);
-    }
+                .enqueue(new Callback<ArticleListApiResponse>() {
+                    @Override
+                    public void onResponse(Call<ArticleListApiResponse> call, Response<ArticleListApiResponse> response) {
+                        Log.i("MainActivity", "response : " + response.body().toString());
+                    }
 
-    @Override
-    public void onResponse(Call<ArticleListApiResponse> call, Response<ArticleListApiResponse> response) {
-        Log.i("MainActivity", "response : " + response.body().toString());
-    }
-
-    @Override
-    public void onFailure(Call<ArticleListApiResponse> call, Throwable t) {
-        Log.e("MainActivity", "getArticle failed: " + t.getLocalizedMessage());
+                    @Override
+                    public void onFailure(Call<ArticleListApiResponse> call, Throwable t) {
+                        Log.e("MainActivity", "getArticle failed: " + t.getLocalizedMessage());
+                    }
+                });
     }
 }
