@@ -1,7 +1,7 @@
 # Task 3 - Showing data on the screen
 In task3, we'll list the articles coming from api on the screen, use RecyclerView for it.
 
-**1 - Add RecyclerView in activity_main.xml** : 
+**1 - Add RecyclerView in activity_main.xml** :
 
  ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -18,8 +18,8 @@ In task3, we'll list the articles coming from api on the screen, use RecyclerVie
 
 </android.support.constraint.ConstraintLayout>
  ```
- 
-**2 - Create a new layout for list item - item_article.xml under res/layout directory** : 
+
+**2 - Create a new layout for list item - item_article.xml under res/layout directory** :
 
  ```
 <?xml version="1.0" encoding="utf-8"?>
@@ -44,7 +44,7 @@ In task3, we'll list the articles coming from api on the screen, use RecyclerVie
 </LinearLayout>
  ```
 
-**3 - Create adapter for recyclerview - ArticleAdapter.java** : 
+**3 - Create adapter for recyclerview - ArticleAdapter.java** :
 
  ```
 public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecyclerViewAdapter.ArticleViewHolder> {
@@ -93,8 +93,8 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
 
 }
  ```
- 
- **4 - Initialize recyclerview in MainActivity.java** : 
+
+ **4 - Initialize recyclerview in MainActivity.java** :
 
  ```
 public class MainActivity extends AppCompatActivity implements Callback<ArticleListApiResponse> {
@@ -138,11 +138,157 @@ public class MainActivity extends AppCompatActivity implements Callback<ArticleL
         Log.e("MainActivity", "getArticle failed: " + t.getLocalizedMessage());
     }
 }
- 
+
  ```
- 
-**5 - Run application** : 
+
+**5 - Run application** :
 
 ![MacDown Screenshot](https://github.com/busradeniz/android-workshop-beginner/blob/task3/img/1.png)
 
 
+# Adding Detail Screen
+We'll add a new activity which will be launched when we click on
+one of the list item.
+
+**1 - Create a new activity : DetailActivity.java** :
+
+ ```
+public class DetailActivity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+    }
+
+}
+ ```
+
+**2 - Create a layout for DetailActivity : activity_detail.xml** :
+
+ ```
+ <?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgArticle"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgArticle" />
+
+
+    <TextView
+        android:id="@+id/txtDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txtTitle" />
+
+</android.support.constraint.ConstraintLayout>
+  ```
+
+
+**3 - Add DetailActivity to AndroidManifest.xml** :
+
+ ```
+<activity android:name=".ui.DetailActivity"/>
+  ```
+
+**4 - Add item click listener to RecyclerView** :
+Create an interface in ArticleAdapter.java
+
+ ```
+ interface OnItemClickListener {
+    void onItemClick(Article article);
+ }
+  ```
+
+ Then add it as a variable :
+
+```
+private OnItemClickListener onItemClickListener;
+
+
+ArticleAdapter(OnItemClickListener onItemClickListener) {
+    this.onItemClickListener = onItemClickListener;
+}
+
+ ```
+
+ Implement this interface in MainActivity :
+
+ ```
+ public class MainActivity extends AppCompatActivity implements OnItemClickListener {
+
+	...
+
+	 @Override
+    public void onItemClick(Article article) {
+
+    }
+
+ }
+
+  ```
+
+
+**5 - Create a new intent object to pass data to another activity and start DetailActivity** :
+
+ ```
+     @Override
+    public void onItemClick(Article article) {
+        Intent intent = new Intent(this, DetailActivity.class);
+        intent.putExtra("TITLE", article.getTitle());
+        intent.putExtra("DESCRIPTION", article.getDescription());
+        intent.putExtra("IMAGE_URL", article.getUrlToImage());
+        startActivity(intent);
+    }
+
+  ```
+
+**6 - Read data in DetailActivity and set screen** :
+
+ ```
+ @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail);
+
+        ImageView imgArticle = findViewById(R.id.imgArticle);
+        TextView txtTitle = findViewById(R.id.txtTitle);
+        TextView txtDescription = findViewById(R.id.txtDescription);
+
+
+        String title = getIntent().getStringExtra("TITLE");
+        String description = getIntent().getStringExtra("DESCRIPTION");
+        String imageUrl = getIntent().getStringExtra("IMAGE_URL");
+
+        txtTitle.setText(title);
+        txtDescription.setText(description);
+
+        Glide.with(this)
+                .load(imageUrl)
+                .into(imgArticle);
+    }
+  ```
+
+  **7 - Run application** :
+
+ ![MacDown Screenshot](https://github.com/busradeniz/android-workshop-beginner/blob/task3/img/2.png)

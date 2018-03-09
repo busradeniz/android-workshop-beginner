@@ -18,6 +18,12 @@ import java.util.List;
 public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
     private List<Article> articleList = new ArrayList<>();
+    private OnItemClickListener onItemClickListener;
+
+
+    ArticleAdapter(OnItemClickListener onItemClickListener) {
+        this.onItemClickListener = onItemClickListener;
+    }
 
     @NonNull
     @Override
@@ -30,12 +36,19 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     @Override
     public void onBindViewHolder(@NonNull ArticleAdapter.ArticleViewHolder holder, int position) {
-        Article article = articleList.get(position);
+        final Article article = articleList.get(position);
         holder.title.setText(article.getTitle());
 
         Glide.with(holder.itemView.getContext())
                 .load(article.getUrlToImage())
                 .into(holder.imgArticle);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onItemClickListener.onItemClick(article);
+            }
+        });
     }
 
     @Override
@@ -46,10 +59,11 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
 
     public void updateDataSet(List<Article> list) {
         articleList.addAll(list);
+        notifyDataSetChanged();
     }
 
     protected class ArticleViewHolder extends RecyclerView.ViewHolder {
-        TextView title, description;
+        TextView title;
         ImageView imgArticle;
 
         ArticleViewHolder(View view) {
@@ -59,4 +73,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleV
         }
     }
 
+}
+
+interface OnItemClickListener {
+    void onItemClick(Article article);
 }
