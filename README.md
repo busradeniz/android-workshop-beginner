@@ -1,6 +1,10 @@
 # Task 3 - Showing data on the screen
 In task3, we'll list the articles coming from api on the screen, use RecyclerView for it.
 
+**RecyclerView** :
+
+ ![MacDown Screenshot](https://github.com/busradeniz/android-workshop-beginner/blob/task3/img/3.png)
+
 **1 - Add RecyclerView in activity_main.xml** :
 
  ```
