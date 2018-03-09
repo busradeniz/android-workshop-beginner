@@ -17,7 +17,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity implements Callback<ArticleListApiResponse> {
 
     private ArticleService articleService = ArticleService.getInstance();
-    private ArticleRecyclerViewAdapter adapter;
+    private ArticleAdapter adapter;
     private RecyclerView articleRecyclerView;
 
     @Override
@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity implements Callback<ArticleL
     private void initRecyclerView() {
         articleRecyclerView = findViewById(R.id.recyclerView);
 
-        adapter = new ArticleRecyclerViewAdapter();
+        adapter = new ArticleAdapter();
         articleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         articleRecyclerView.setAdapter(adapter);
     }

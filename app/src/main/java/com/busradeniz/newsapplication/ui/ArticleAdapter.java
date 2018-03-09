@@ -15,17 +15,13 @@ import com.busradeniz.newsapplication.api.Article;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by busradeniz on 08/03/2018.
- */
-
-public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecyclerViewAdapter.ArticleViewHolder> {
+public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.ArticleViewHolder> {
 
     private List<Article> articleList = new ArrayList<>();
 
     @NonNull
     @Override
-    public ArticleRecyclerViewAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ArticleAdapter.ArticleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_article, parent, false);
 
@@ -33,10 +29,9 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ArticleRecyclerViewAdapter.ArticleViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ArticleAdapter.ArticleViewHolder holder, int position) {
         Article article = articleList.get(position);
         holder.title.setText(article.getTitle());
-        holder.description.setText(article.getDescription());
 
         Glide.with(holder.itemView.getContext())
                 .load(article.getUrlToImage())
@@ -60,7 +55,6 @@ public class ArticleRecyclerViewAdapter extends RecyclerView.Adapter<ArticleRecy
         ArticleViewHolder(View view) {
             super(view);
             title = view.findViewById(R.id.txtTitle);
-            description = view.findViewById(R.id.txtDescription);
             imgArticle = view.findViewById(R.id.imgArticle);
         }
     }
